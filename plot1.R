@@ -1,5 +1,5 @@
 ################################################################################
-#
+
 #      Coursera 'Exploratory Data Analysis' Class Project 2 - Plot 1
 #
 # Author: Chip Boling
@@ -17,17 +17,25 @@
 #      The plotting output for this file will be named 'plot1.png'
 #
 #################################################################################
-suppressPackageStartupMessages(library(data.table))
-library(data.table)
-#################################################################################
-# Load the data, use read.table since fread has some issues with '?' as NA but the
-# workaround below is still orders of magnitude faster that read.table
-#
+# set the working directory to match that of this script
+setwd(dirname(parent.frame(2)$ofile))
 plotFile <- './plot1.png'
 
 # Read in the data files
-
 NEI <- readRDS("./data/summarySCC_PM25.rds")
 SCC <- readRDS("./data/Source_Classification_Code.rds")
 
-#
+# Melt the data so we can recast it to a simple object with the year and sum of the
+# emissions from all sources
+
+moltenData <- melt(NEI, id=c('year'), measure.vars=c('Emissions'))
+emissionsByYear <- cast(moltenData, year~variable, sum)
+
+# Use base plotting package barplot to show the results
+
+barplot(emissionsByYear$Emissions, main='PM2.5 Total Emissions', xlab='Year',
+        ylab='Total Emissions (tons)', names=emissionsByYear$year)
+
+dev.copy(png, file=plotFile, width=480, height=480)
+dev.off()
+
