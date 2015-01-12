@@ -24,3 +24,21 @@ plotFile <- './plot2.png'
 # Read in the data files
 NEI <- readRDS("./data/summarySCC_PM25.rds")
 SCC <- readRDS("./data/Source_Classification_Code.rds")
+
+# Subset the data for Baltimore (fips=24510)
+
+baltimoreNEI <- NEI[NEI$fips=="24510",]
+
+# Melt the data so we can recast it to a simple object with the year and sum of the
+# emissions from all sources
+
+moltenData <- melt(baltimoreNEI, id=c('year'), measure.vars=c('Emissions'))
+emissionsByYear <- cast(moltenData, year~variable, sum)
+
+# Use base plotting package barplot to show the results
+
+barplot(emissionsByYear$Emissions, main='PM2.5 Total Emissions For Baltimore City, Maryland',
+        xlab='Year', ylab='Total Emissions (tons)', names=emissionsByYear$year)
+
+dev.copy(png, file=plotFile, width=480, height=480)
+dev.off()
