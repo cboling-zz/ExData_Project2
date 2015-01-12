@@ -17,13 +17,14 @@
 #      The plotting output for this file will be named 'plot1.png'
 #
 #################################################################################
+library(reshape)
+#################################################################################
 # set the working directory to match that of this script
 setwd(dirname(parent.frame(2)$ofile))
 plotFile <- './plot1.png'
 
-# Read in the data files
+# Read in the data file
 NEI <- readRDS("./data/summarySCC_PM25.rds")
-SCC <- readRDS("./data/Source_Classification_Code.rds")
 
 # Melt the data so we can recast it to a simple object with the year and sum of the
 # emissions from all sources

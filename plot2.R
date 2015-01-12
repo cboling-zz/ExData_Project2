@@ -17,16 +17,16 @@
 #      The plotting output for this file will be named 'plot2.png'
 #
 #################################################################################
+library(reshape)
+#################################################################################
 # set the working directory to match that of this script
 setwd(dirname(parent.frame(2)$ofile))
 plotFile <- './plot2.png'
 
-# Read in the data files
+# Read in the data file
 NEI <- readRDS("./data/summarySCC_PM25.rds")
-SCC <- readRDS("./data/Source_Classification_Code.rds")
 
 # Subset the data for Baltimore (fips=24510)
-
 baltimoreNEI <- NEI[NEI$fips=="24510",]
 
 # Melt the data so we can recast it to a simple object with the year and sum of the
