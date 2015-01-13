@@ -19,8 +19,6 @@
 #################################################################################
 library(reshape)
 #################################################################################
-# set the working directory to match that of this script
-setwd(dirname(parent.frame(2)$ofile))
 plotFile <- './plot2.png'
 
 # Read in the data file

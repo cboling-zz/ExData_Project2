@@ -19,10 +19,6 @@
 #################################################################################
 library(reshape)
 #################################################################################
-# set the working directory to match that of this script
-setwd(dirname(parent.frame(2)$ofile))
-plotFile <- './plot1.png'
-
 # Read in the data file
 NEI <- readRDS("./data/summarySCC_PM25.rds")
 

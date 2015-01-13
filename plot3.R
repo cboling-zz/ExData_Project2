@@ -23,9 +23,6 @@
 library(reshape)
 library(ggplot2)
 #################################################################################
-# set the working directory to match that of this script
-this.dir <- dirname(parent.frame(2)$ofile)
-setwd(this.dir)
 plotFile <- './plot3.png'
 
 # Read in the data files
@@ -47,11 +44,16 @@ names(emissions)[1]<-'Year'
 names(emissions)[2]<-'Type'
 names(emissions)[4]<-'Emissions'
 
-# Now plot the results
+# First and last year value so we can plot overall trend line (dots)
+first <- head(emissions$Year,1)
+last  <- tail(emissions$Year,1)
 
+# Now plot the results
 p <- ggplot(emissions, aes(x=Year, y=Emissions, group=Type, color=Type))
 p <- p + geom_point(size=3)
-p <- p + geom_line(linetype='longdash')
+p <- p + geom_line()
+p <- p + geom_line(linetype='dotted',data=subset(emissions, Year==first | Year==last),
+                   aes(x=Year, y=Emissions,group=Type, color=Type))
 p <- p + ylab('Total Emissions (tons)')
 p <- p + ggtitle('PM2.5 Total Emissions by Type (for Baltimore City, Maryland)')
 print(p)

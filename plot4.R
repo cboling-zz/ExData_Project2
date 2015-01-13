@@ -15,8 +15,6 @@
 #      The plotting output for this file will be named 'plot4.png'
 #
 #################################################################################
-# set the working directory to match that of this script
-setwd(dirname(parent.frame(2)$ofile))
 plotFile <- './plot4.png'
 
 # Read in the data files
