@@ -44,6 +44,13 @@ names(emissions)[1]<-'Year'
 names(emissions)[2]<-'Type'
 names(emissions)[4]<-'Emissions'
 
+# Also determine the number of reporting locations per year
+
+locations <- as.data.frame(as.table(cast(moltenData, year ~ type ~ variable, length)))
+names(locations)[1]<-'Year'
+names(locations)[2]<-'Type'
+names(locations)[4]<-'Count'
+
 # First and last year value so we can plot overall trend line (dots)
 first <- head(emissions$Year,1)
 last  <- tail(emissions$Year,1)
