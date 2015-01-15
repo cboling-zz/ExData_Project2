@@ -43,10 +43,10 @@ avgEmissionsByYear <- cast(moltenData, year ~ variable, mean)
 
 par(mfrow=c(1,2))
 
-barplot(emissionsByYear$Emissions, main='PM2.5 Total Emissions For Baltimore City, Maryland',
-        xlab='Year', ylab='Total Emissions (tons)', names=emissionsByYear$year)
-barplot(avgEmissionsByYear$Emissions, main='Average Emissions For Baltimore City, Maryland', xlab='Year',
-        ylab='Avg Emissions (tons)', names=avgEmissionsByYear$year)
+barplot(emissionsByYear$Emissions, main='Total Emissions For Baltimore City, MD',
+        xlab='Year', ylab='PM2.5 Total Emissions (tons)', names=emissionsByYear$year)
+barplot(avgEmissionsByYear$Emissions, main='Avg. Emissions (Baltimore City, MD)', xlab='Year',
+        ylab='PM2.5 Avg Emissions (tons)', names=avgEmissionsByYear$year)
 
 dev.copy(png, file=plotFile, width=640, height=480)
 dev.off()
