@@ -48,5 +48,5 @@ barplot(emissionsByYear$Emissions, main='Total Emissions For Baltimore City, MD'
 barplot(avgEmissionsByYear$Emissions, main='Avg. Emissions (Baltimore City, MD)', xlab='Year',
         ylab='PM2.5 Avg Emissions (tons)', names=avgEmissionsByYear$year)
 
-dev.copy(png, file=plotFile, width=640, height=480)
+dev.copy(png, file=plotFile, width=980, height=640)
 dev.off()
