@@ -22,6 +22,8 @@
 #################################################################################
 library(reshape)
 library(ggplot2)
+library(grid)
+library(gridExtra)
 #################################################################################
 plotFile <- './plot3.png'
 
@@ -44,26 +46,36 @@ names(emissions)[1]<-'Year'
 names(emissions)[2]<-'Type'
 names(emissions)[4]<-'Emissions'
 
-# Also determine the number of reporting locations per year
+# Note: Also can get average emission count per year (in case # data sources different
+#       each year with the formula:
 
-locations <- as.data.frame(as.table(cast(moltenData, year ~ type ~ variable, length)))
-names(locations)[1]<-'Year'
-names(locations)[2]<-'Type'
-names(locations)[4]<-'Count'
+avgEmissionsByYear <- as.data.frame(as.table(cast(moltenData, year~type~variable, sum)))
+names(avgEmissionsByYear)[1]<-'Year'
+names(avgEmissionsByYear)[2]<-'Type'
+names(avgEmissionsByYear)[4]<-'Emissions'
 
 # First and last year value so we can plot overall trend line (dots)
-first <- head(emissions$Year,1)
-last  <- tail(emissions$Year,1)
+first    <- head(emissions$Year,1)
+last     <- tail(emissions$Year,1)
 
 # Now plot the results
-p <- ggplot(emissions, aes(x=Year, y=Emissions, group=Type, color=Type))
-p <- p + geom_point(size=3)
-p <- p + geom_line()
-p <- p + geom_line(linetype='dotted',data=subset(emissions, Year==first | Year==last),
-                   aes(x=Year, y=Emissions,group=Type, color=Type))
-p <- p + ylab('Total Emissions (tons)')
-p <- p + ggtitle('PM2.5 Total Emissions by Type (for Baltimore City, Maryland)')
-print(p)
+p1 <- ggplot(emissions, aes(x=Year, y=Emissions, group=Type, color=Type))
+p1 <- p1 + geom_point(size=3)
+p1 <- p1 + geom_line()
+p1 <- p1 + geom_line(linetype='dotted',data=subset(emissions, Year==first | Year==last),
+                     aes(x=Year, y=Emissions,group=Type, color=Type))
+p1 <- p1 + ylab('PM2.5 Total Emissions (tons)')
+p1 <- p1 + ggtitle('Total Emissions by Type')
 
-dev.copy(png, file=plotFile, width=480, height=480)
+p2 <- ggplot(avgEmissionsByYear, aes(x=Year, y=Emissions, group=Type, color=Type))
+p2 <- p2 + geom_point(size=3)
+p2 <- p2 + geom_line()
+p2 <- p2 + geom_line(linetype='dotted',data=subset(avgEmissionsByYear, Year==first | Year==last),
+                     aes(x=Year, y=Emissions,group=Type, color=Type))
+p2 <- p2 + ylab('PM2.5 Avg Emissions (tons)')
+p2 <- p2 + ggtitle('Average Emissions by Type')
+
+grid.arrange(p1, p2, ncol = 2, main = "PM2.5 Emissions By Type for Baltimore City, MD")
+
+dev.copy(png, file=plotFile, width=980, height=640)
 dev.off()
