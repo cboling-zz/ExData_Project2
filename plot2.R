@@ -33,10 +33,20 @@ baltimoreNEI <- NEI[NEI$fips=="24510",]
 moltenData <- melt(baltimoreNEI, id=c('year'), measure.vars=c('Emissions'))
 emissionsByYear <- cast(moltenData, year~variable, sum)
 
+# Note: Also can get average emission count per year (in case # data sources different
+#       each year with the formula:
+
+avgEmissionsByYear <- cast(moltenData, year ~ variable, mean)
+
+#######################################################
 # Use base plotting package barplot to show the results
+
+par(mfrow=c(1,2))
 
 barplot(emissionsByYear$Emissions, main='PM2.5 Total Emissions For Baltimore City, Maryland',
         xlab='Year', ylab='Total Emissions (tons)', names=emissionsByYear$year)
+barplot(avgEmissionsByYear$Emissions, main='Average Emissions For Baltimore City, Maryland', xlab='Year',
+        ylab='Avg Emissions (tons)', names=avgEmissionsByYear$year)
 
-dev.copy(png, file=plotFile, width=480, height=480)
+dev.copy(png, file=plotFile, width=640, height=480)
 dev.off()

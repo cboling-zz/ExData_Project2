@@ -19,6 +19,8 @@
 #################################################################################
 library(reshape)
 #################################################################################
+plotFile <- './plot1.png'
+
 # Read in the data file
 NEI <- readRDS("./data/summarySCC_PM25.rds")
 
@@ -28,11 +30,21 @@ NEI <- readRDS("./data/summarySCC_PM25.rds")
 moltenData <- melt(NEI, id=c('year'), measure.vars=c('Emissions'))
 emissionsByYear <- cast(moltenData, year~variable, sum)
 
+# Note: Also can get average emission count per year (in case # data sources different
+#       each year with the formula:
+
+avgEmissionsByYear <- cast(moltenData, year ~ variable, mean)
+
+#######################################################
 # Use base plotting package barplot to show the results
+
+par(mfrow=c(1,2))
 
 barplot(emissionsByYear$Emissions, main='PM2.5 Total Emissions', xlab='Year',
         ylab='Total Emissions (tons)', names=emissionsByYear$year)
+barplot(avgEmissionsByYear$Emissions, main='Average Emissions by Year', xlab='Year',
+        ylab='Avg Emissions (tons)', names=avgEmissionsByYear$year)
 
-dev.copy(png, file=plotFile, width=480, height=480)
+dev.copy(png, file=plotFile, width=640, height=480)
 dev.off()
 
