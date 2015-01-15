@@ -49,7 +49,7 @@ names(emissions)[4]<-'Emissions'
 # Note: Also can get average emission count per year (in case # data sources different
 #       each year with the formula:
 
-avgEmissionsByYear <- as.data.frame(as.table(cast(moltenData, year~type~variable, sum)))
+avgEmissionsByYear <- as.data.frame(as.table(cast(moltenData, year~type~variable, mean)))
 names(avgEmissionsByYear)[1]<-'Year'
 names(avgEmissionsByYear)[2]<-'Type'
 names(avgEmissionsByYear)[4]<-'Emissions'
@@ -64,6 +64,7 @@ p1 <- p1 + geom_point(size=3)
 p1 <- p1 + geom_line()
 p1 <- p1 + geom_line(linetype='dotted',data=subset(emissions, Year==first | Year==last),
                      aes(x=Year, y=Emissions,group=Type, color=Type))
+p1 <- p1 + theme(legend.position="none")
 p1 <- p1 + ylab('PM2.5 Total Emissions (tons)')
 p1 <- p1 + ggtitle('Total Emissions by Type')
 
